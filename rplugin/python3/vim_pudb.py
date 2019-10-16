@@ -100,6 +100,22 @@ class NvimPudb(object):
             self.nvim.command("unlet g:pudb_entry_point")
             self.nvim.command("echo 'Entry point cleared'")
 
+    def set_save_file_names(self, buffname):
+        """Set save file name for pudb
+        :returns: TODO
+
+        """
+        pass
+        # pudb.settings.SAVED_BREAKPOINTS_FILE_NAME = (
+        #     os.path.basename(os.path.dirname(buffname)) + '-' +
+        #     os.path.basename(self.cbname()) + '.bp')
+        # pudb.settings.BREAKPOINTS_FILE_NAME = (
+        #     os.path.basename(os.path.dirname(buffname)) + '-bp-' +
+        #     os.path.basename(buffname))
+        # self.nvim.command("echo '{}\n{}'".format(
+        #     pudb.settings.SAVED_BREAKPOINTS_FILE_NAME,
+        #     pudb.settings.BREAKPOINTS_FILE_NAME) + '.bp')
+
     # @property
     def cbname(self):
         """cbname
@@ -146,6 +162,15 @@ class NvimPudb(object):
                 yield self.pudbbp(*brpt[:2])
             elif buffname == brpt[0]:
                 yield self.pudbbp(*brpt[:2])
+
+    def reload_bp(self, arg1):
+        """TODO: Docstring for reload_bp.
+
+        :arg1: TODO
+        :returns: TODO
+
+        """
+        pass
 
     def place_sign(self, buffname, lineno):
         """place_sign
@@ -352,6 +377,7 @@ class NvimPudb(object):
         if buffname[:7] == 'term://':
             return
         self.buf_initial(buffname)
+        self.set_save_file_names(buffname)
         self.nvim.command(':sign define {} text={} texthl={}'.format(
             self.sgnname(), self.bpsymbol(), self.hlgroup()))
         self.update_buffer(buffname)
@@ -368,6 +394,7 @@ class NvimPudb(object):
         if buffname[:7] == 'term://':
             return
         self.buf_initial(buffname)
+        self.set_save_file_names(buffname)
         self.nvim.command(':sign define {} text={} texthl={}'.format(
             self.sgnname(), self.bpsymbol(), self.hlgroup()))
         self.update_buffer(buffname)
@@ -383,6 +410,7 @@ class NvimPudb(object):
         if buffname[:7] == 'term://':
             return
         self.buf_initial(buffname)
+        self.set_save_file_names(buffname)
         if self._toggle_status[buffname]:
             self.toggle_sign_on()
         else:
